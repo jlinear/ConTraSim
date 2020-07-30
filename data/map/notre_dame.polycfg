@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on Tue Jun 23 12:12:51 2020 by Eclipse SUMO polyconvert Version 1.6.0
+<!-- generated on Wed Jul 29 11:02:17 2020 by Eclipse SUMO polyconvert Version UNKNOWN
 -->
 
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/polyconvertConfiguration.xsd">
 
     <input>
+        <net-file value="notre_dame.net.xml"/>
         <osm-files value="notre_dame_bbox.osm.xml"/>
         <osm.keep-full-type value="true"/>
-        <type-file value="/usr/share/sumo/data/typemap/osmPolyconvert.typ.xml"/>
+        <type-file value="/usr/share/sumo-dev/data/typemap/osmPolyconvert.typ.xml"/>
     </input>
 
     <output>

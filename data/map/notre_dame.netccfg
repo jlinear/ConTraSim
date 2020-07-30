@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on Tue Jun 23 12:12:47 2020 by Eclipse SUMO netconvert Version 1.6.0
+<!-- generated on Wed Jul 29 11:02:13 2020 by Eclipse SUMO netconvert Version UNKNOWN
 -->
 
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <type-files value="/usr/share/sumo/data/typemap/osmNetconvert.typ.xml,/usr/share/sumo/data/typemap/osmNetconvertUrbanDe.typ.xml,/usr/share/sumo/data/typemap/osmNetconvertPedestrians.typ.xml,/usr/share/sumo/data/typemap/osmNetconvertBicycle.typ.xml"/>
+        <type-files value="/usr/share/sumo-dev/data/typemap/osmNetconvert.typ.xml,/usr/share/sumo-dev/data/typemap/osmNetconvertUrbanDe.typ.xml,/usr/share/sumo-dev/data/typemap/osmNetconvertPedestrians.typ.xml,/usr/share/sumo-dev/data/typemap/osmNetconvertBicycle.typ.xml"/>
         <osm-files value="notre_dame_bbox.osm.xml"/>
     </input>
 
