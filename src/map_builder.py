@@ -243,7 +243,8 @@ def build_osm(args=None, bindir=None):
     polyconvertOpts += [
         "--osm-files", options.osm_files,
         "--output-file", poly_file,
-        "--save-configuration", poly_cfg
+        "--save-configuration", poly_cfg,
+        "-n", net_file
     ]
     if options.polyconvert_typemap:
         polyconvertOpts += ["--type-file", options.polyconvert_typemap]
@@ -259,7 +260,9 @@ def build_osm(args=None, bindir=None):
 
 
 if __name__ == "__main__":
-    options = ["-p", "notre_dame", "-d", "data/map"]
-    get_osm(options)
-    options += ["--osm-files", "data/map/notre_dame_bbox.osm.xml"]
-    build_osm(options)
+    # options = ["-p", "notre_dame", "-d", "data/map"]
+    # get_osm(options)
+    # options += ["--osm-files", "data/map/notre_dame_bbox.osm.xml"]
+    # build_osm(options)
+    get_osm()
+    build_osm()
