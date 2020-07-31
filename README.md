@@ -45,3 +45,9 @@ output: the final output of trajectory dataset
 - **\*.netccfg**: netconvert configuration file, the file is generated when running the SUMO netconvert program, and is simply a copy of the configurations being fed into netconvert. The purpose is to keep a record and make the netcovert process repeatable.
 - **\*.polycfg**: polyconvert configuration file, generated and saved when running the SUMO polyconvert program.
 - **\*.adjusted_poly.add.xml**: mannually adjusted polygon file based on *\*.poly.xml*
+
+
+### src
+
+- **map.builder.py**: map extractor and network builder relyingon OpenStreetMap
+- **get_taz.py**: translate predefined stops or clusters to Traffic Analysis Zones (TAZs)
