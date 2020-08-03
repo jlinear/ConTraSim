@@ -18,13 +18,14 @@
 MAX_NEIGHBOR = 8
 
 import os, sys
+import csv
 if 'SUMO_HOME' in os.environ:
     tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
     sys.path.append(tools)
 else:
     sys.exit("please declare environment variable 'SUMO_HOME'")
 import sumolib
-from typing import Tuple, List, TextIO
+from typing import Tuple, List, Dict, TextIO
 from pathlib import Path
 
 
@@ -84,8 +85,28 @@ def get_nearby_edges_by_poly(
     return ped_edges, car_edges
 
 
-def write_taz_file(
-    loc_dict_file: TextIO,
+def read_loc_dict_file(
+    file_path: str,
+    poly_based: bool = False
+) -> Dict:
+    if not file_path.is_file():
+        raise FileNotFoundError("location dict file not found!")
+    reader = csv.DictReader(open(file_path))
+
+    loc_dict = {}
+    for row in reader:
+        if row['loc'] in loc_dict:
+            raise ValueError('duplicate location value found: ' + row['loc'])
+        if poly_based:
+            pass  # TODO: parse poly vertices and store as GeoPoly
+        else:
+            loc_dict[row['loc']] = GeoPoint(float(row['lat']), float(row['lng']))
+
+    return loc_dict
+
+
+def generate_taz(
+    loc_dict: Dict,
     net: sumolib.net,
     save_path: str,
     use_poly: bool = False
