@@ -147,7 +147,7 @@ if __name__ == "__main__":
     """
     wd = Path(__file__).parents[1].absolute()
     net_file = wd.joinpath('data', 'map', 'notre_dame.net.xml')
-    loc_dict_file = wd.joinpath('data', 'map', 'loc_dict.csv')
+    loc_dict_file = wd.joinpath('data', 'map', 'notre_dame_loc_dict.csv')
 
     if not net_file.is_file():
         raise FileNotFoundError("not a valid network file")
