@@ -155,6 +155,7 @@ if __name__ == "__main__":
     loc_dict_f = loc_dict_file
     loc_dict = read_loc_dict_file(file_path=loc_dict_file)
 
-    generate_taz(loc_dict, net, 'test_taz.taz.xml', 100)
+    save_path = wd.joinpath('data', 'map', 'notre_dame.taz.xml')
+    generate_taz(loc_dict, net, save_path, 100)
 
     print(0)
