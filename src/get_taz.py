@@ -19,6 +19,7 @@ MAX_NEIGHBOR = 8
 
 import os, sys
 import csv
+import logging
 if 'SUMO_HOME' in os.environ:
     tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
     sys.path.append(tools)
@@ -28,6 +29,7 @@ import sumolib
 from typing import Tuple, List, Dict, TextIO
 from pathlib import Path
 
+logging.basicConfig(format='get_taz:%(levelname)s: %(message)s')
 
 class GeoPoint():
     def __init__(self, lat: float, lng: float):
@@ -59,8 +61,10 @@ def get_nearby_edges(
 
     closest_ped_edges = sorted(ped_edges, key=lambda x: x[1])[:max_neighbor]
     closest_car_edges = sorted(car_edges, key=lambda x: x[1])[:max_neighbor]
-    closest_ped_edges = list(list(zip(*closest_ped_edges))[0])
-    closest_car_edges = list(list(zip(*closest_car_edges))[0])
+    if len(closest_ped_edges) > 0:
+        closest_ped_edges = list(list(zip(*closest_ped_edges))[0])
+    if len(closest_car_edges) > 0:
+        closest_car_edges = list(list(zip(*closest_car_edges))[0])
 
     return closest_ped_edges, closest_car_edges
 
@@ -68,7 +72,7 @@ def get_nearby_edges(
 def get_nearby_edges_by_poly(
     net: sumolib.net,
     poly: GeoPoly,
-    dist: float
+    radius: float
 ) -> Tuple[List]:
     """
     get nearby edges of a given polygon
@@ -78,7 +82,7 @@ def get_nearby_edges_by_poly(
     ped_edges = set()
     car_edges = set()
     for v in poly.vertices:
-        p_e, c_e = get_nearby_edges(net, v, dist)
+        p_e, c_e = get_nearby_edges(net, v, radius)
         ped_edges.update(p_e)
         car_edges.update(c_e)
 
@@ -109,12 +113,31 @@ def generate_taz(
     loc_dict: Dict,
     net: sumolib.net,
     save_path: str,
+    radius: float,
     use_poly: bool = False
 ) -> None:
     """
     translate location dictionary into SUMO readable taz file
     """
-    pass
+    fd = open(save_path, "w")
+    sumolib.xml.writeHeader(fd, "$Id$", "tazs", "taz_file.xsd")
+    if use_poly:
+        # TODO: apply poly-based rules
+        pass
+    else:
+        for loc in loc_dict:
+            center = loc_dict[loc]
+            p_e, c_e = get_nearby_edges(net, center, radius)
+            # TODO: two different taz files for p_e and c_e
+            if len(p_e + c_e) == 0:
+                logging.warning("no edges found for taz: %s" % loc)
+            all_edges = list(set(p_e+c_e))
+            edge_ids = [x.getID() for x in all_edges]
+            fd.write(
+                '    <taz id="%s" edges="%s"/>\n' % (loc, ' '.join(edge_ids))
+            )
+    fd.write("</taz>\n")
+    fd.close()
 
 
 if __name__ == "__main__":
@@ -129,10 +152,9 @@ if __name__ == "__main__":
     if not net_file.is_file():
         raise FileNotFoundError("not a valid network file")
     net = sumolib.net.readNet(net_file._str)
+    loc_dict_f = loc_dict_file
+    loc_dict = read_loc_dict_file(file_path=loc_dict_file)
 
+    generate_taz(loc_dict, net, 'test_taz.taz.xml', 100)
 
-    p = GeoPoint(lat=41.702409, lng=-86.234141)
-    r = 100
-    edges1 = get_nearby_edges(net, p, r)
-    # edges2 = get_nearby_edges_poly()
     print(0)
