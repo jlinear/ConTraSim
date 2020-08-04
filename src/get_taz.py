@@ -136,7 +136,7 @@ def generate_taz(
             fd.write(
                 '    <taz id="%s" edges="%s"/>\n' % (loc, ' '.join(edge_ids))
             )
-    fd.write("</taz>\n")
+    fd.write("</tazs>\n")
     fd.close()
 
 
