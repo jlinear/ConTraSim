@@ -21,9 +21,37 @@ Two major features are realized in this python script
 2) extract key info. from sample trajectory data and generate itinerary
 """
 
+import os, sys
+import pandas as pd
+from pathlib import Path
 
-def read_raw_schedule():
-    pass
+
+def convert24(str_t):
+    tail = str_t[-2:]
+    h, m = str_t[:-2].strip().split(':')
+
+    if tail in ("AM", "am") and h == "12":
+        return "00" + str_t[2:-2]
+    elif tail in ("AM", "am"):
+        if len(h) < 2:  # allows input as "1:30am"
+            return "0" + str_t[:-2]
+        else:
+            return str_t[:-2]
+    elif tail in ("PM", "pm") and str_t[:2] == "12":
+        return str_t[:-2]
+    else:
+        return str(int(h) + 12) + ":" + m
+
+
+def read_raw_schedule(
+    file_path: str
+) -> pd.DataFrame:
+    if not file_path.is_file():
+        raise FileNotFoundError("schedule file not found!")
+
+    raw_schedule = pd.read_csv(file_path)
+    print(raw_schedule)
+    print(0)
 
 
 def write_itinerary():
@@ -34,5 +62,16 @@ def generate_itinerary():
     print(0)
 
 
+def test():
+    wd = Path(__file__).parents[1].absolute()
+    schedule_file = wd.joinpath('data', 'profiles', 'sample_schedule.raw.csv')
+
+    read_raw_schedule(file_path=schedule_file)
+
+    # Driver Code         
+    print(convert24("08:05am"))
+
+
 if __name__ == "__main__":
+    test()
     print(0)
