@@ -21,7 +21,6 @@ Two major features are realized in this python script
 2) extract key info. from sample trajectory data and generate itinerary
 """
 
-import os, sys
 import datetime
 import pandas as pd
 import numpy as np
@@ -31,6 +30,7 @@ from pathlib import Path
 TIME_S = 0
 TIME_E = 432000
 T = 3600
+
 
 def convert24(str_t: str) -> datetime.time:
     """
@@ -140,6 +140,13 @@ def expand_to_slot(
     return df
 
 
+def extract_schedule(
+    sample_traj: str,
+    th: float
+) -> pd.DataFrame:
+    pass
+
+
 def read_raw_schedule(
     file_path: str
 ) -> pd.DataFrame:
@@ -155,31 +162,20 @@ def read_raw_schedule(
     return raw_sch
 
 
-def write_itinerary():
-    pass
+def write_itinerary(
+    df: pd.DataFrame,
+    save_path: str
+) -> None:
+    df.to_csv(save_path, index=False, na_rep="NULL")
 
 
 def generate_itinerary(
     raw_sch: pd.DataFrame,
-    win_t: int
+    win_t: int = T
 ) -> pd.DataFrame:
-    # transform raw to full set
-
-    # apply policies to fill NA
-
-    # randomness will be added when generating trips
-    print(0)
-
-
-def test():
-    wd = Path(__file__).parents[1].absolute()
-    schedule_file = wd.joinpath('data', 'profiles', 'sample_schedule.raw.csv')
-
-    raw_sch = read_raw_schedule(file_path=schedule_file)
-
     sch_in_sec = raw_sch.apply(to_seconds, axis=1)
 
-    slots = np.arange(TIME_S, TIME_E, T)
+    slots = np.arange(TIME_S, TIME_E, win_t)
 
     sch_in_sec["s_left"] = sch_in_sec["start_time"].apply(lambda x: find_closest(slots, x, "left"))
     sch_in_sec["e_left"] = sch_in_sec["end_time"].apply(lambda x: find_closest(slots, x, "left"))
@@ -192,10 +188,25 @@ def test():
         axis=0
     )
     sch_in_slot.reset_index(inplace=True, drop=True)
-    
-    print(0)
+
+    tmslt = pd.DataFrame(data=slots, columns=["timeslot"])
+    uid = pd.DataFrame(data=sch_in_slot['uid'].unique(), columns=["uid"])
+    tmslt['key'], uid['key'] = 1, 1
+    uid_slot = pd.merge(uid, tmslt, on='key').drop("key", 1)
+
+    itinerary = pd.merge(uid_slot, sch_in_slot, on=['uid', 'timeslot'], how='left')
+
+    return itinerary
 
 
 if __name__ == "__main__":
-    test()
+    wd = Path(__file__).parents[1].absolute()
+    schedule_file = wd.joinpath('data', 'profiles', 'sample_schedule.raw.csv')
+    itinerary_save_path = wd.joinpath('data', 'profiles', 'sample_itinerary.csv')
+
+    raw_sch = read_raw_schedule(file_path=schedule_file)
+
+    sch_in_slot = generate_itinerary(raw_sch=raw_sch)
+    write_itinerary(df=sch_in_slot, save_path=itinerary_save_path)
+
     print(0)
