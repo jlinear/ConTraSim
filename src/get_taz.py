@@ -109,11 +109,38 @@ def read_loc_dict_file(
     return loc_dict
 
 
+def get_stop_edges(
+    net: sumolib.net,
+    loc_dict: Dict,
+    radius: float,
+    poly_based: bool = False
+) -> Dict:
+    stop2edge = {}
+    if poly_based:
+        # TODO: update this branch after poly feature finished
+        for loc in loc_dict:
+            poly = loc_dict[loc]
+            p_e, c_e = get_nearby_edges_by_poly(net, poly, radius)
+            stop2edge[loc] = {
+                "ped_edges": [x.getID() for x in p_e],
+                "car_edges": [x.getID() for x in c_e]
+            }
+    else:
+        for loc in loc_dict:
+            center = loc_dict[loc]
+            p_e, c_e = get_nearby_edges(net, center, radius)
+            stop2edge[loc] = {
+                "ped_edges": [x.getID() for x in p_e],
+                "car_edges": [x.getID() for x in c_e]
+            }
+    return stop2edge
+
+
 def generate_taz(
     loc_dict: Dict,
     net: sumolib.net,
     save_path: str,
-    radius: float,
+    radius: float,  # in meters
     use_poly: bool = False
 ) -> None:
     """
