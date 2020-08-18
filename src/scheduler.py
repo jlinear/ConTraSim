@@ -25,6 +25,7 @@ import datetime
 import pandas as pd
 import numpy as np
 from pathlib import Path
+from typing import Dict
 
 
 TIME_S = 0
@@ -140,6 +141,25 @@ def expand_to_slot(
     return df
 
 
+def rm_itin_duplicates(
+    df: pd.DataFrame,
+    stop_distr: pd.Series
+) -> pd.DataFrame:
+    if df.shape[0] <= 1:
+        ret_df = df
+    else:
+        dur_df = df.groupby(['uid','timeslot','stop']).sum()
+        max_dur_df = dur_df.loc[dur_df.duration == dur_df.duration.max()].reset_index()
+        if max_dur_df.shape[0] == 1:
+            ret_df = max_dur_df
+        else:
+            stops = max_dur_df['stop']
+            uid = max_dur_df.uid[0]
+            stop_freq_df = pd.DataFrame(dict(freq=stop_distr[uid]), index=stops)
+            ret_df = max_dur_df.loc[max_dur_df.stop == stop_freq_df.freq.idxmax()]
+    return ret_df
+
+
 def extract_schedule(
     sample_traj: str,
     th: float
@@ -172,15 +192,15 @@ def write_itinerary(
 def generate_itinerary(
     raw_sch: pd.DataFrame,
     win_t: int = T
-) -> pd.DataFrame:
+) -> (pd.DataFrame, Dict):
     sch_in_sec = raw_sch.apply(to_seconds, axis=1)
 
     slots = np.arange(TIME_S, TIME_E, win_t)
 
-    sch_in_sec["s_left"] = sch_in_sec["start_time"].apply(lambda x: find_closest(slots, x, "left"))
-    sch_in_sec["e_left"] = sch_in_sec["end_time"].apply(lambda x: find_closest(slots, x, "left"))
-    sch_in_sec["s_right"] = sch_in_sec["start_time"].apply(lambda x: find_closest(slots, x, "right"))
-    sch_in_sec["e_right"] = sch_in_sec["end_time"].apply(lambda x: find_closest(slots, x, "right"))
+    sch_in_sec["s_left"] = sch_in_sec["start_time"].apply(lambda x: find_closest(slots, x, "left"))  # noqa
+    sch_in_sec["e_left"] = sch_in_sec["end_time"].apply(lambda x: find_closest(slots, x, "left"))  # noqa
+    sch_in_sec["s_right"] = sch_in_sec["start_time"].apply(lambda x: find_closest(slots, x, "right"))  # noqa
+    sch_in_sec["e_right"] = sch_in_sec["end_time"].apply(lambda x: find_closest(slots, x, "right"))  # noqa
 
     expand_to_slot(sch_in_sec.iloc[3], slots)
     sch_in_slot = pd.concat(
@@ -196,7 +216,15 @@ def generate_itinerary(
 
     itinerary = pd.merge(uid_slot, sch_in_slot, on=['uid', 'timeslot'], how='left')
 
-    return itinerary
+    stop_distr = {}
+    uid_group = itinerary.groupby(['uid'])
+    for uid, df in uid_group:
+        stop_distr[uid] = df['stop'].value_counts(normalize=True)
+
+    itin_df = itinerary.groupby(['uid', 'timeslot']).apply(lambda x: rm_itin_duplicates(x, stop_distr))  # noqa
+    itin_df.reset_index(drop=True, inplace=True)
+
+    return itin_df, stop_distr
 
 
 if __name__ == "__main__":
@@ -206,7 +234,8 @@ if __name__ == "__main__":
 
     raw_sch = read_raw_schedule(file_path=schedule_file)
 
-    sch_in_slot = generate_itinerary(raw_sch=raw_sch)
+    sch_in_slot = generate_itinerary(raw_sch=raw_sch)[0]
     write_itinerary(df=sch_in_slot, save_path=itinerary_save_path)
+    # TODO: write stop_distr to file
 
     print(0)
