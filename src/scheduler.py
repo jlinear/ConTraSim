@@ -236,6 +236,6 @@ if __name__ == "__main__":
 
     sch_in_slot = generate_itinerary(raw_sch=raw_sch)[0]
     write_itinerary(df=sch_in_slot, save_path=itinerary_save_path)
-    # TODO: write stop_distr to file
+    # TODO: write stop_distr to file if necessary
 
     print(0)
