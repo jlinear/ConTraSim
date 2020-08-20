@@ -129,6 +129,48 @@ def fill_null_stop_alt(
     return df
 
 
+def get_mode(
+    uid: str,
+    src: str,
+    dst: str
+):
+    # TODO: select/read mode preference (e.g., select from 0.6 walk, 0.4 drive, OR dist vs. mode distr)
+    return 'walk'
+
+
+def get_edge_from_taz(
+    taz: str,
+    mode: str,
+    stop2edges: Dict
+) -> str:
+    """
+    issue: the returned edge should be compatible with ped, car and bike
+    """
+    if taz not in stop2edges:
+        raise KeyError("taz " + taz + " not found in taz files.")
+
+    if mode == 'walk':
+        return np.random.choice(stop2edges[taz]['ped_edges'])
+    else:  # i.e., 'car' or 'bike'
+        return np.random.choice(stop2edges[taz]['car_edges'])
+    # TODO: whatif edge list if empty?
+
+
+def get_depart_time(
+    start: float,
+    delta: float
+) -> str:
+    t = np.random.uniform(start, start+delta, 1)[0]
+    return "{:.2f}".format(t)
+
+
+def get_type(
+    uid: str,
+    type_dic: Dict,
+) -> str:
+    return 'tp0'
+
+
 def generate_trips(
     itin_df: pd.DataFrame,
     stop_distr: Dict,
@@ -144,20 +186,70 @@ def generate_trips(
     pt_f = open(pt_path, "w")
     ct_f = open(ct_path, "w")
     bt_f = open(bt_path, "w")
-    sumolib.xml.writeHeader(pt_f, script=None, root="routes", schemaPath="route_file.xsd")  # noqa
-    sumolib.xml.writeHeader(ct_f, script=None, root="routes", schemaPath="route_file.xsd")  # noqa
-    sumolib.xml.writeHeader(bt_f, script=None, root="routes", schemaPath="route_file.xsd")  # noqa
+    sumolib.xml.writeHeader(pt_f, script=None, root="routes", schemaPath="routes_file.xsd")  # noqa
+    sumolib.xml.writeHeader(ct_f, script=None, root="routes", schemaPath="routes_file.xsd")  # noqa
+    sumolib.xml.writeHeader(bt_f, script=None, root="routes", schemaPath="routes_file.xsd")  # noqa
 
     for uid, itin in itin_df.groupby('uid'):
         itin = itin.drop(['uid', 'duration'], axis=1).set_index('timeslot')
-
         # fillna
-        # 1) find the stops within 2T range same time of the week
-        # if len(1) > 0: 2) keep stops within T/2 of driving distance and weighted select
-        # else: 2) weighted select from stop_distr and apply to all five
-        itin = fill_null_stop_alt(df=itin, stop_distr=stop_distr[uid], eta=2)
-        print(uid)
-        print(itin)
+        itin = fill_null_stop(df=itin, stop_distr=stop_distr[uid], eta=2)
+        # iterate over one user
+        pid = 'p' + str(uid)
+        type_p = get_type(uid, None)
+        trip_0 = True
+        edge_stack = []
+        for idx, row in itin.iterrows():
+            if idx + T < 432000 and row['stop'] != itin.loc[idx+T]['stop']:
+                src, dst = row['stop'], itin.loc[idx+3600]['stop']
+                if trip_0:
+                    trip_0 = False
+                    depart = get_depart_time(start=idx, delta=T)
+                    pt_f.write(
+                        '    <person id="%s" depart="%s" type="%s">\n'
+                        % (pid, depart, type_p)
+                    )
+                else:
+                    depart = get_depart_time(start=idx, delta=T)
+                    pt_f.write(
+                        ' '*8 + '<stop until="%s"/>\n'
+                        % depart
+                    )
+                # TODO: handle the case where multi-mode is needed, e.g., home to office include drive and walk
+                mode = get_mode(uid=uid, src=src, dst=dst)
+                if len(edge_stack) > 0:
+                    src_edge = edge_stack.pop()
+                else:
+                    src_edge = get_edge_from_taz(src, mode, stop2edges)
+                dst_edge = get_edge_from_taz(dst, mode, stop2edges)
+                edge_stack.append(dst_edge)
+                if mode == 'walk':
+                    pt_f.write(
+                        ' '*8 + '<walk from="%s" to="%s"/>\n'
+                        % (src_edge, dst_edge)
+                    )
+                elif mode == 'car':
+                    car_id = "c_" + str(idx)
+                    pt_f.write(
+                        ' '*8 + '<ride from="%s" to="%s" lines="%s"/>\n'
+                        % (src_edge, dst_edge, car_id)
+                    )
+                elif mode == 'bike':
+                    bike_id = "b_" + str(idx)
+                    pt_f.write(
+                        ' '*8 + '<ride from="%s" to="%s" lines="%s"/>\n'
+                        % (src_edge, dst_edge, bike_id)
+                    )
+                else:
+                    raise ValueError("Not a valid transport mode: " + mode)
+                # assign to specific type id (comes from a dict of {uid: type})
+                # set depart range(idx, next idx)
+                # write person xml
+                # if not walk, write car/bike xml
+
+        pt_f.write('    </person>\n')    
+
+        print(0)
 
     # policy of whether to add a trip
 
