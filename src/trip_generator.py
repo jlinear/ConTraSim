@@ -55,8 +55,82 @@ def read_intinerary(
     return itin_df
 
 
+def fill_null_stop(
+    df: pd.DataFrame,
+    stop_distr: pd.Series,
+    eta: int = 2
+) -> pd.DataFrame:
+    """
+    randomly choose corresponding number of stops from non-na stops and fillna
+    """
+    # T = df.index[1] - df.index[0]
+    for idx, row in df.iterrows():
+        if pd.isna(row['stop']):
+            t = np.arange(np.mod(idx, 24*3600), 24*3600*5, 24*3600)
+            t_range = np.concatenate([_t + np.arange(-eta*T, (eta+1)*T, T) for _t in t])
+            t_range = t_range[(t_range >= 0) & (t_range < 24*3600*5)]
+            stop_visited = df.loc[t_range]
+            if stop_visited['stop'].notna().any():
+                # fillna from non-na stops (Opt1: multiple stops fill in multi-na)
+                non_na_stops = stop_visited[stop_visited['stop'].notna()]
+                na_stops = stop_visited[stop_visited['stop'].isna()]
+                stop_weights = non_na_stops['stop'].value_counts(normalize=True)
+                len_na = na_stops.shape[0]
+                fills = pd.Series(
+                    np.random.choice(stop_weights.index, len_na, p=stop_weights),
+                    index=na_stops.index
+                )
+                df['stop'].fillna(fills, inplace=True)
+            else:
+                # fillna from stop_distr
+                fills = pd.Series(
+                    np.random.choice(stop_distr.index, 1, p=stop_distr)[0],
+                    index=stop_visited.index
+                )
+                # TODO： fill based on weighted prob or highest prob?
+                df['stop'].fillna(fills, inplace=True)
+    return df
+
+
+def fill_null_stop_alt(
+    df: pd.DataFrame,
+    stop_distr: pd.Series,
+    eta: int = 2
+) -> pd.DataFrame:
+    """
+    randomly choose 1 stop from all non-na stops and fillna
+    """
+    # T = df.index[1] - df.index[0]
+    for idx, row in df.iterrows():
+        if pd.isna(row['stop']):
+            t = np.arange(np.mod(idx, 24*3600), 24*3600*5, 24*3600)
+            t_range = np.concatenate([_t + np.arange(-eta*T, (eta+1)*T, T) for _t in t])
+            t_range = t_range[(t_range >= 0) & (t_range < 24*3600*5)]
+            stop_visited = df.loc[t_range]
+            if stop_visited['stop'].notna().any():
+                # fillna from non-na stops (Opt1: multiple stops fill in multi-na)
+                non_na_stops = stop_visited[stop_visited['stop'].notna()]
+                na_stops = stop_visited[stop_visited['stop'].isna()]
+                stop_weights = non_na_stops['stop'].value_counts(normalize=True)
+                len_na = na_stops.shape[0]
+                fills = pd.Series(
+                    np.random.choice(stop_weights.index, 1, p=stop_weights)[0],
+                    index=na_stops.index
+                )
+                df['stop'].fillna(fills, inplace=True)
+            else:
+                # fillna from stop_distr
+                fills = pd.Series(
+                    np.random.choice(stop_distr.index, 1, p=stop_distr)[0],
+                    index=stop_visited.index
+                )
+                # TODO： fill based on weighted prob or highest prob?
+                df['stop'].fillna(fills, inplace=True)
+    return df
+
+
 def generate_trips(
-    itin: pd.DataFrame,
+    itin_df: pd.DataFrame,
     stop_distr: Dict,
     net: sumolib.net,
     stop2edges: Dict,
@@ -70,10 +144,20 @@ def generate_trips(
     pt_f = open(pt_path, "w")
     ct_f = open(ct_path, "w")
     bt_f = open(bt_path, "w")
-    sumolib.xml.writeHeader(pt_f, script=None, root="routes", schemaPath="route_file.xsd")
-    sumolib.xml.writeHeader(ct_f, script=None, root="routes", schemaPath="route_file.xsd")
-    sumolib.xml.writeHeader(bt_f, script=None, root="routes", schemaPath="route_file.xsd")
-    
+    sumolib.xml.writeHeader(pt_f, script=None, root="routes", schemaPath="route_file.xsd")  # noqa
+    sumolib.xml.writeHeader(ct_f, script=None, root="routes", schemaPath="route_file.xsd")  # noqa
+    sumolib.xml.writeHeader(bt_f, script=None, root="routes", schemaPath="route_file.xsd")  # noqa
+
+    for uid, itin in itin_df.groupby('uid'):
+        itin = itin.drop(['uid', 'duration'], axis=1).set_index('timeslot')
+
+        # fillna
+        # 1) find the stops within 2T range same time of the week
+        # if len(1) > 0: 2) keep stops within T/2 of driving distance and weighted select
+        # else: 2) weighted select from stop_distr and apply to all five
+        itin = fill_null_stop_alt(df=itin, stop_distr=stop_distr[uid], eta=2)
+        print(uid)
+        print(itin)
 
     # policy of whether to add a trip
 
@@ -118,7 +202,7 @@ if __name__ == "__main__":
 
     # generate trips
     generate_trips(
-        itin=itin_df,
+        itin_df=itin_df,
         stop_distr=stop_distr,
         net=net,
         stop2edges=stop2edges,
