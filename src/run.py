@@ -22,6 +22,19 @@ generate sumoconfig file, and execute sumo program
 
 
 def run():
+    # call map_buider to build the map
+
+    # call scheduler to format the schedule (from raw schedule or sample)
+
+    # call PLACEHOLDER to get the type/mode pref (ROUTE DEVICE here??)
+
+    # call trip_generator to get the trip definition
+
+    # call duarouter -c xxxx.duarcfg to compute route files for cars and bike
+
+    # write sumo config file and run sumo
+
+    # processing output
     pass
 
 

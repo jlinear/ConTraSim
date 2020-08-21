@@ -129,13 +129,25 @@ def fill_null_stop_alt(
     return df
 
 
+def get_type(
+    uid: str,
+    type_dic: Dict,
+) -> str:
+    # TODO: TODO: TODO
+    return 'tp0'
+
+
 def get_mode(
     uid: str,
     src: str,
     dst: str
 ):
     # TODO: select/read mode preference (e.g., select from 0.6 walk, 0.4 drive, OR dist vs. mode distr)
-    return 'walk'
+    pref = {
+        0: {'walk': 0.9, 'car': 0.1},
+        1: {'walk': 0.2, 'car': 0.8}
+    }
+    return np.random.choice(['walk', 'car'], 1, pref[uid])
 
 
 def get_edge_from_taz(
@@ -150,10 +162,16 @@ def get_edge_from_taz(
         raise KeyError("taz " + taz + " not found in taz files.")
 
     if mode == 'walk':
-        return np.random.choice(stop2edges[taz]['ped_edges'])
+        try:
+            return np.random.choice(stop2edges[taz]['ped_edges'])
+        except ValueError:
+            # empty list of edges
+            return None
     else:  # i.e., 'car' or 'bike'
-        return np.random.choice(stop2edges[taz]['car_edges'])
-    # TODO: whatif edge list if empty?
+        try:
+            return np.random.choice(stop2edges[taz]['car_edges'])
+        except ValueError:
+            return np.random.choice(stop2edges[taz]['ped_edges'])
 
 
 def get_depart_time(
@@ -161,14 +179,8 @@ def get_depart_time(
     delta: float
 ) -> str:
     t = np.random.uniform(start, start+delta, 1)[0]
+    # TODO: try a different distribution for depart time
     return "{:.2f}".format(t)
-
-
-def get_type(
-    uid: str,
-    type_dic: Dict,
-) -> str:
-    return 'tp0'
 
 
 def generate_trips(
@@ -197,11 +209,13 @@ def generate_trips(
         # iterate over one user
         pid = 'p' + str(uid)
         type_p = get_type(uid, None)
+        type_c = 'tc0'
+        type_b = 'tb0'
         trip_0 = True
         edge_stack = []
         for idx, row in itin.iterrows():
             if idx + T < 432000 and row['stop'] != itin.loc[idx+T]['stop']:
-                src, dst = row['stop'], itin.loc[idx+3600]['stop']
+                src, dst = row['stop'], itin.loc[idx+T]['stop']
                 if trip_0:
                     trip_0 = False
                     depart = get_depart_time(start=idx, delta=T)
@@ -229,17 +243,61 @@ def generate_trips(
                         % (src_edge, dst_edge)
                     )
                 elif mode == 'car':
-                    car_id = "c_" + str(idx)
-                    pt_f.write(
-                        ' '*8 + '<ride from="%s" to="%s" lines="%s"/>\n'
-                        % (src_edge, dst_edge, car_id)
-                    )
+                    car_id = "c_" + str(uid) + '_' + str(idx)
+                    if src_edge is None:
+                        # TODO: add policy for this!
+                        raise ValueError("Not a valid source edge")
+                    if not net.getEdge(src_edge).allows('passenger'):  # caused by previous dst
+                        via_edge = get_edge_from_taz(src, 'car', stop2edges)
+                        pt_f.write(
+                            ' '*8 + '<walk from="%s" to="%s"/>\n'
+                            % (src_edge, via_edge)
+                        )
+                        pt_f.write(
+                            ' '*8 + '<ride from="%s" to="%s" lines="%s"/>\n'
+                            % (via_edge, dst_edge, car_id)
+                        )
+                        ct_f.write(
+                            '    <trip id="%s" type="%s" depart="triggered" from="%s" to="%s"/>\n'  # noqa
+                            % (car_id, type_c, via_edge, dst_edge)
+                        )
+                    else:
+                        pt_f.write(
+                            ' '*8 + '<ride from="%s" to="%s" lines="%s"/>\n'
+                            % (src_edge, dst_edge, car_id)
+                        )
+                        ct_f.write(
+                            '    <trip id="%s" type="%s" depart="triggered" from="%s" to="%s"/>\n'  # noqa
+                            % (car_id, type_c, src_edge, dst_edge)
+                        )
                 elif mode == 'bike':
-                    bike_id = "b_" + str(idx)
-                    pt_f.write(
-                        ' '*8 + '<ride from="%s" to="%s" lines="%s"/>\n'
-                        % (src_edge, dst_edge, bike_id)
-                    )
+                    bike_id = "b_" + str(uid) + '_' + str(idx)
+                    if src_edge is None:
+                        # TODO: add policy for this!
+                        raise ValueError("Not a valid source edge")
+                    if not net.getEdge(src_edge).allows('passenger'):  # caused by previous dst
+                        via_edge = get_edge_from_taz(src, 'bike', stop2edges)
+                        pt_f.write(
+                            ' '*8 + '<walk from="%s" to="%s"/>\n'
+                            % (src_edge, via_edge)
+                        )
+                        pt_f.write(
+                            ' '*8 + '<ride from="%s" to="%s" lines="%s/>\n'
+                            % (via_edge, dst_edge, bike_id)
+                        )
+                        ct_f.write(
+                            '    <trip id="%s" type="%s" depart="triggered" from="%s" to="%s"/>\n'  # noqa
+                            % (bike_id, type_c, via_edge, dst_edge)
+                        )
+                    else:
+                        pt_f.write(
+                            ' '*8 + '<ride from="%s" to="%s" lines="%s"/>\n'
+                            % (src_edge, dst_edge, bike_id)
+                        )
+                        bt_f.write(
+                            '    <trip id="%s" type="%s" depart="triggered" from="%s" to="%s"/>\n'  # noqa
+                            % (bike_id, type_b, src_edge, dst_edge)
+                        )
                 else:
                     raise ValueError("Not a valid transport mode: " + mode)
                 # assign to specific type id (comes from a dict of {uid: type})
@@ -247,7 +305,7 @@ def generate_trips(
                 # write person xml
                 # if not walk, write car/bike xml
 
-        pt_f.write('    </person>\n')    
+        pt_f.write('    </person>\n')
 
         print(0)
 
