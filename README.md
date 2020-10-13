@@ -18,7 +18,7 @@ This project was developed and tested with the following dependencies
 
 ## Data Source
 For survey-based profile modeling, an anoymized sample user profile is provided under the path '/data/profiles'. 
-For sample-based profile modeling, the GeoLife is used and can be download [here](https://www.microsoft.com/en-us/download/details.aspx?id=52367).
+For sample-based profile modeling, the GeoLife dataset is used and can be download [here](https://www.microsoft.com/en-us/download/details.aspx?id=52367).
 
 
 ## Citation
