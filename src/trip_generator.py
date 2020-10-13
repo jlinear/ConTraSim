@@ -42,7 +42,7 @@ from scheduler import (
 
 
 R = 100
-T = 3600
+T = 7200
 
 
 def read_intinerary(
@@ -63,7 +63,7 @@ def fill_null_stop(
     """
     randomly choose corresponding number of stops from non-na stops and fillna
     """
-    # T = df.index[1] - df.index[0]
+    T = df.index[1] - df.index[0]
     for idx, row in df.iterrows():
         if pd.isna(row['stop']):
             t = np.arange(np.mod(idx, 24*3600), 24*3600*5, 24*3600)
@@ -143,11 +143,28 @@ def get_mode(
     dst: str
 ):
     # TODO: select/read mode preference (e.g., select from 0.6 walk, 0.4 drive, OR dist vs. mode distr)
+    # pref = {
+    #     0: {'walk': 0.9, 'car': 0.1},
+    #     1: {'walk': 0.2, 'car': 0.8}
+    # }
     pref = {
-        0: {'walk': 0.9, 'car': 0.1},
-        1: {'walk': 0.2, 'car': 0.8}
+        'j001': [0.7, 0, 0.3],
+        'a001': [0.6, 0.4, 0],
+        'e001': [0.95, 0.05, 0],
+        'e002': [0.75, 0.25, 0],
+        'e003': [1, 0, 0],
+        'e004': [0.5, 0.5, 0],
+        'e006': [0.7, 0, 0.3],
+        'e007': [0.7, 0, 0.3],
+        'j004': [0.5, 0.2, 0.3],
+        'j005': [0.6, 0.1, 0.3],
+        's002': [0.3, 0.7, 0],
+        's003': [0.4, 0.6, 0],
+        0: [0.3, 0.7, 0],
+        1: [0.4, 0.6, 0]
     }
-    return np.random.choice(['walk', 'car'], 1, pref[uid])
+
+    return np.random.choice(['walk', 'bike', 'car'], 1, p=pref[uid])
 
 
 def get_edge_from_taz(
@@ -282,7 +299,7 @@ def generate_trips(
                             % (src_edge, via_edge)
                         )
                         pt_f.write(
-                            ' '*8 + '<ride from="%s" to="%s" lines="%s/>\n'
+                            ' '*8 + '<ride from="%s" to="%s" lines="%s"/>\n'
                             % (via_edge, dst_edge, bike_id)
                         )
                         ct_f.write(

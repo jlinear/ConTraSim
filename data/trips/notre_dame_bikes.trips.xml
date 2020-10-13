@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- generated on 2020-09-01 22:58:06.687481 by run.py v1_6_0+1293-6f542e5c3a
+  options: 
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <trip id="b_a001_36000" type="tb0" depart="triggered" from="-726163743" to="-726163741"/>
+    <trip id="b_a001_280800" type="tb0" depart="triggered" from="726163743" to="726163742#0"/>
+    <trip id="b_e002_14400" type="tb0" depart="triggered" from="723380243#1" to="-726163743"/>
+    <trip id="b_e002_360000" type="tb0" depart="triggered" from="723380243#3" to="593823824#0"/>
+    <trip id="b_e004_43200" type="tb0" depart="triggered" from="773150881" to="-593823824#0"/>
+    <trip id="b_e004_50400" type="tb0" depart="triggered" from="-593823824#0" to="-153121926#4"/>
+    <trip id="b_e004_57600" type="tb0" depart="triggered" from="-153121926#4" to="721220794"/>
+    <trip id="b_e004_208800" type="tb0" depart="triggered" from="17540347#2" to="-773150881"/>
+    <trip id="b_e004_288000" type="tb0" depart="triggered" from="721220780#14" to="-726163743"/>
+    <trip id="b_e004_324000" type="tb0" depart="triggered" from="17540347#2" to="-17536421#5"/>
+    <trip id="b_e004_388800" type="tb0" depart="triggered" from="773150881" to="17536421#6"/>
+    <trip id="b_e004_417600" type="tb0" depart="triggered" from="17558874#13" to="721220780#15"/>
+    <trip id="b_j004_108000" type="tb0" depart="triggered" from="-593823824#0" to="774942380#1"/>
+    <trip id="b_j004_115200" type="tb0" depart="triggered" from="774942380#1" to="726163743"/>
+    <trip id="b_j004_280800" type="tb0" depart="triggered" from="-17558874#17" to="726163743"/>
+    <trip id="b_s002_28800" type="tb0" depart="triggered" from="593823824#0" to="774942380#1"/>
+    <trip id="b_s002_36000" type="tb0" depart="triggered" from="774942380#1" to="-726163743"/>
+    <trip id="b_s002_43200" type="tb0" depart="triggered" from="-726163743" to="-726163743"/>
+    <trip id="b_s002_50400" type="tb0" depart="triggered" from="-726163743" to="726163743"/>
+    <trip id="b_s002_100800" type="tb0" depart="triggered" from="593823824#0" to="17558874#13"/>
+    <trip id="b_s002_108000" type="tb0" depart="triggered" from="17558874#13" to="-726163743"/>
+    <trip id="b_s002_129600" type="tb0" depart="triggered" from="-726163743" to="-726163743"/>
+    <trip id="b_s002_201600" type="tb0" depart="triggered" from="593823824#0" to="-17540347#3"/>
+    <trip id="b_s002_367200" type="tb0" depart="triggered" from="17558874#13" to="593823824#0"/>
+    <trip id="b_s002_417600" type="tb0" depart="triggered" from="-774942380#1" to="-726163743"/>
+    <trip id="b_s003_43200" type="tb0" depart="triggered" from="726163743" to="726163741"/>
+    <trip id="b_s003_79200" type="tb0" depart="triggered" from="-17534796" to="-726163743"/>
+    <trip id="b_s003_136800" type="tb0" depart="triggered" from="-726163743" to="17534796"/>
+    <trip id="b_s003_165600" type="tb0" depart="triggered" from="17534796" to="593823824#0"/>
+    <trip id="b_s003_216000" type="tb0" depart="triggered" from="593823824#0" to="-17540347#2"/>
+    <trip id="b_s003_223200" type="tb0" depart="triggered" from="-17540347#2" to="17534796"/>
+    <trip id="b_s003_244800" type="tb0" depart="triggered" from="17534796" to="593823824#0"/>
+    <trip id="b_s003_288000" type="tb0" depart="triggered" from="593823824#0" to="-594685505#2"/>
+</routes>

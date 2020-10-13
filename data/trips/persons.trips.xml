@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+
+    <!-- <vType id="walk" vClass="pedestrian"/> -->
+
+    <person id="p0" depart="1500.00" type="tp0">
+        <!-- <stop lane="152169589#1_0" until="1600"/> -->
+        <walk from="152169589#1" to="153117748#1"/>
+        <stop until="3600.00" actType="study"/>
+        <ride from="153117748#1" to="223312092#10" lines="b0"/>
+        <stop until="5700.00" actType="class"/>
+        <ride from="223312092#10" to="-650762160" lines="c0"/>
+    </person>
+
+    <person id="p1" depart="500">
+        <walk from="153117748#1" to="314294738#14"/>
+    </person>
+
+</routes>

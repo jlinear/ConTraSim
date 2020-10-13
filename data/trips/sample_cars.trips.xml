@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- generated on 2020-09-01 23:09:42.632683 by trip_generator.py v1_6_0+1293-6f542e5c3a
+  options: 
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <trip id="b_0_50400" type="tc0" depart="triggered" from="-774942380#1" to="-593823824#0"/>
+    <trip id="b_0_129600" type="tc0" depart="triggered" from="-726163743" to="723686078#0"/>
+    <trip id="b_0_172800" type="tc0" depart="triggered" from="-593823824#1" to="17538300#1"/>
+    <trip id="b_0_230400" type="tc0" depart="triggered" from="774942380#1" to="-17538300#1"/>
+    <trip id="b_0_367200" type="tc0" depart="triggered" from="-593823824#0" to="774942380#1"/>
+    <trip id="b_0_403200" type="tc0" depart="triggered" from="-726163743" to="-726163743"/>
+    <trip id="b_1_216000" type="tc0" depart="triggered" from="-17534053#3" to="-793096952"/>
+    <trip id="b_1_237600" type="tc0" depart="triggered" from="593823824#0" to="-793096952"/>
+    <trip id="b_1_388800" type="tc0" depart="triggered" from="17534053#1" to="793096952"/>
+</routes>

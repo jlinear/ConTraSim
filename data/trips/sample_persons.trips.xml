@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- generated on 2020-09-01 23:09:42.632618 by trip_generator.py v1_6_0+1293-6f542e5c3a
+  options: 
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+    <person id="p0" depart="25365.91" type="tp0">
+        <ride from="17538300#1" to="593823824#0" lines="b_0_21600"/>
+        <stop until="50192.70"/>
+        <walk from="593823824#0" to="151183965"/>
+        <stop until="50599.51"/>
+        <walk from="151183965" to="-774942380#1"/>
+        <ride from="-774942380#1" to="-593823824#0" lines="b_0_50400"/>
+        <stop until="63468.94"/>
+        <ride from="-593823824#0" to="-774942380#1" lines="b_0_57600"/>
+        <stop until="65738.14"/>
+        <walk from="-774942380#1" to="-17538300#1"/>
+        <stop until="81726.55"/>
+        <ride from="-17538300#1" to="593823824#1" lines="b_0_79200"/>
+        <stop until="98532.02"/>
+        <ride from="593823824#1" to="723686079" lines="b_0_93600"/>
+        <stop until="114300.71"/>
+        <walk from="723686079" to="43667477#3"/>
+        <stop until="118396.00"/>
+        <walk from="43667477#3" to="43666951"/>
+        <stop until="134790.00"/>
+        <walk from="43666951" to="-726163743"/>
+        <ride from="-726163743" to="723686078#0" lines="b_0_129600"/>
+        <stop until="144282.25"/>
+        <ride from="723686078#0" to="593823824#1" lines="b_0_144000"/>
+        <stop until="156844.90"/>
+        <ride from="593823824#1" to="17538300#1" lines="b_0_151200"/>
+        <stop until="158618.95"/>
+        <walk from="17538300#1" to="43667438#0"/>
+        <stop until="179118.27"/>
+        <walk from="43667438#0" to="-593823824#1"/>
+        <ride from="-593823824#1" to="17538300#1" lines="b_0_172800"/>
+        <stop until="188290.44"/>
+        <ride from="17538300#1" to="593823824#1" lines="b_0_187200"/>
+        <stop until="202478.57"/>
+        <ride from="593823824#1" to="774942380#1" lines="b_0_201600"/>
+        <stop until="222506.54"/>
+        <ride from="774942380#1" to="-723686079" lines="b_0_216000"/>
+        <stop until="230038.02"/>
+        <walk from="-723686079" to="680369133#13"/>
+        <stop until="233915.90"/>
+        <walk from="680369133#13" to="774942380#1"/>
+        <ride from="774942380#1" to="-17538300#1" lines="b_0_230400"/>
+        <stop until="256834.47"/>
+        <walk from="-17538300#1" to="43666975"/>
+        <stop until="289179.96"/>
+        <walk from="43666975" to="-723686079"/>
+        <stop until="296444.03"/>
+        <ride from="-723686079" to="774942380#1" lines="b_0_295200"/>
+        <stop until="304074.44"/>
+        <ride from="774942380#1" to="-593823824#1" lines="b_0_302400"/>
+        <stop until="313022.52"/>
+        <ride from="-593823824#1" to="-723686078#1" lines="b_0_309600"/>
+        <stop until="319038.49"/>
+        <ride from="-723686078#1" to="-726163743" lines="b_0_316800"/>
+        <stop until="332442.36"/>
+        <ride from="-726163743" to="17538300#1" lines="b_0_331200"/>
+        <stop until="352129.12"/>
+        <ride from="17538300#1" to="-774942380#1" lines="b_0_345600"/>
+        <stop until="358347.54"/>
+        <ride from="-774942380#1" to="-726163743" lines="b_0_352800"/>
+        <stop until="361277.04"/>
+        <walk from="-726163743" to="43667477#2"/>
+        <stop until="369207.92"/>
+        <walk from="43667477#2" to="-593823824#0"/>
+        <ride from="-593823824#0" to="774942380#1" lines="b_0_367200"/>
+        <stop until="375734.60"/>
+        <ride from="774942380#1" to="-726163743" lines="b_0_374400"/>
+        <stop until="384955.38"/>
+        <ride from="-726163743" to="-774942380#1" lines="b_0_381600"/>
+        <stop until="394045.37"/>
+        <ride from="-774942380#1" to="723686078#1" lines="b_0_388800"/>
+        <stop until="396409.69"/>
+        <walk from="723686078#1" to="722722000"/>
+        <stop until="407430.30"/>
+        <walk from="722722000" to="-726163743"/>
+        <ride from="-726163743" to="-726163743" lines="b_0_403200"/>
+        <stop until="413634.03"/>
+        <ride from="-726163743" to="723686079" lines="b_0_410400"/>
+        <stop until="418209.15"/>
+        <ride from="723686079" to="726163743" lines="b_0_417600"/>
+    </person>
+    <person id="p1" depart="32467.93" type="tp0">
+        <ride from="-650762160" to="-726163741" lines="b_1_28800"/>
+        <stop until="38661.68"/>
+        <ride from="-726163741" to="153117748#2" lines="b_1_36000"/>
+        <stop until="45403.85"/>
+        <ride from="153117748#2" to="-418408251#2" lines="b_1_43200"/>
+        <stop until="59873.85"/>
+        <walk from="-418408251#2" to="-650762158#0"/>
+        <stop until="101760.12"/>
+        <ride from="-650762158#0" to="-17534053#1" lines="b_1_100800"/>
+        <stop until="118434.70"/>
+        <ride from="-17534053#1" to="-726163741" lines="b_1_115200"/>
+        <stop until="133136.02"/>
+        <ride from="-726163741" to="593823824#1" lines="b_1_129600"/>
+        <stop until="149202.06"/>
+        <walk from="593823824#1" to="793096952"/>
+        <stop until="209637.69"/>
+        <walk from="793096952" to="152169638"/>
+        <stop until="217012.47"/>
+        <walk from="152169638" to="-17534053#3"/>
+        <ride from="-17534053#3" to="-793096952" lines="b_1_216000"/>
+        <stop until="231118.87"/>
+        <walk from="-793096952" to="43667438#1"/>
+        <stop until="242833.73"/>
+        <walk from="43667438#1" to="593823824#0"/>
+        <ride from="593823824#0" to="-793096952" lines="b_1_237600"/>
+        <stop until="281607.45"/>
+        <ride from="-793096952" to="17534053#3" lines="b_1_280800"/>
+        <stop until="288707.89"/>
+        <ride from="17534053#3" to="-726163741" lines="b_1_288000"/>
+        <stop until="299805.25"/>
+        <ride from="-726163741" to="223312092#10" lines="b_1_295200"/>
+        <stop until="305438.37"/>
+        <ride from="223312092#10" to="649751274#0" lines="b_1_302400"/>
+        <stop until="379385.46"/>
+        <walk from="649751274#0" to="680369133#8"/>
+        <stop until="389831.55"/>
+        <walk from="680369133#8" to="17534053#1"/>
+        <ride from="17534053#1" to="793096952" lines="b_1_388800"/>
+    </person>
+</routes>

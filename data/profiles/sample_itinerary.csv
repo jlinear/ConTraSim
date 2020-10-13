@@ -8,11 +8,8 @@ uid,timeslot,stop,duration
 0,21600,irf,3600
 0,25200,irf,0
 0,28800,sdh,1800
-0,28800,cmc,900
 0,32400,dbt,2100
 0,36000,dbt,900
-0,39600,dnc,1200
-0,39600,str,1200
 0,39600,dbt,1200
 0,43200,dbt,0
 0,46800,NULL,NULL
@@ -36,7 +33,6 @@ uid,timeslot,stop,duration
 0,111600,NULL,NULL
 0,115200,sdh,1800
 0,118800,dbt,3600
-0,122400,dbt,900
 0,122400,dnc,1800
 0,126000,dnc,3600
 0,129600,dnc,3600
@@ -135,7 +131,6 @@ uid,timeslot,stop,duration
 1,32400,NULL,NULL
 1,36000,ftz,3600
 1,39600,ftz,3600
-1,43200,ftz,0
 1,43200,lib,1800
 1,46800,lib,900
 1,50400,NULL,NULL

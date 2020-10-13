@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- generated on Wed Sep  2 00:50:29 2020 by Eclipse SUMO duarouter Version UNKNOWN
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/duarouterConfiguration.xsd">
+
+    <input>
+        <net-file value="data/trips/..//map/notre_dame.net.xml"/>
+        <additional-files value="data/trips/vtypes.add.xml"/>
+        <route-files value="data/trips/notre_dame_persons.trips.xml,data/trips/notre_dame_cars.trips.xml,data/trips/notre_dame_bikes.trips.xml"/>
+    </input>
+
+    <output>
+        <output-file value="data/trips/notre_dame_all.rou.xml"/>
+        <alternatives-output value="data/trips/notre_dame_all.rou.alt.xml"/>
+    </output>
+
+    <report>
+        <xml-validation value="never"/>
+        <no-step-log value="true"/>
+    </report>
+
+</configuration>
+-->
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd"/>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+<!-- The duarouter configuration file takes as input your network and the OD Trips File and output
+the route file -->
+    <input>
+        <!-- Your SUMO Network File -->
+        <net-file value="..//map/notre_dame.net.xml"/>
+
+        <!-- Your SUMO OD Trips File -->
+        <route-files value="notre_dame_persons.trips.xml, notre_dame_cars.trips.xml, notre_dame_bikes.trips.xml"/>
+        <additional-files value= "vtypes.add.xml"/>
+    </input>
+    
+    <output>
+        <output-file value="notre_dame_all.rou.xml"/>
+    </output>
+
+    <report>
+        <xml-validation value="never"/>
+        <no-step-log value="true"/>
+    </report>
+</configuration>

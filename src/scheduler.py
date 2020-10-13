@@ -30,7 +30,7 @@ from typing import Dict
 
 TIME_S = 0
 TIME_E = 432000
-T = 3600
+T = 7200
 
 
 def convert24(str_t: str) -> datetime.time:

@@ -22,6 +22,7 @@ generate sumoconfig file, and execute sumo program
 import os, sys
 import pandas as pd
 import numpy as np
+import subprocess
 if 'SUMO_HOME' in os.environ:
     tools = os.path.join(os.environ['SUMO_HOME'], 'tools')
     sys.path.append(tools)
@@ -43,7 +44,7 @@ from trip_generator import (
 )
 
 
-T = 3600
+T = 7200
 R = 100
 
 
@@ -84,7 +85,7 @@ def run():
         stop_distr=stop_distr,
         net=net,
         stop2edges=stop2edges,
-        save_dir="",
+        save_dir=trip_save_dir,
         prefix='notre_dame'
     )
 
@@ -95,5 +96,7 @@ def run():
     # processing output
     print(0)
 
+
 if __name__ == "__main__":
     run()
+    os.system("/usr/share/sumo-dev/bin/sumo -c /home/jerry/Documents/Projects/ConTraG/exp/notre_dame.sumocfg")

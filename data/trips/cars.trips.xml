@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+
+    <!-- <vType id="car" vClass="passenger"/>
+    <vType id="bike" vClass="bicycle"/> -->
+
+    <vehicle id="c0" type="tc0" depart="triggered">
+        <route edges="223312092#10 -223312092#10 -223312092#9 -223312092#8 -223312092#7 -223312092#6 17536453#2 17536453#3 76155516#0 76155516#1 76155516#2 76155516#3 76155516#4 -76158397#20 17547103#0 17547103#2 17547103#3 17547103#5 653623414#3 653623414#4 653623414#5 653623414#6 653623414#8 653623414#9 653623414#11 653623414#12 653623414#14 653623414#15 -765339030#18 -765339030#17 -765339030#16 -765339030#15 -765339030#14 -765339030#13 -765339030#12 -765339030#10 -765339030#9 -765339030#8 -765339030#7 -765339030#5 -765339030#4 -649751274#1 -649751274#0 649751275#2 -650762160"/>
+        <param key="has.reroute.device" value="true"/>
+    </vehicle>
+
+    <trip id="veh0" type="tc5" depart="0.00" departLane="best" fromTaz="lib" toTaz="uea"/>
+
+</routes>

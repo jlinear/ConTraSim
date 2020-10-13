@@ -1,0 +1,16 @@
+<routes>
+    <vTypeDistribution id="car">
+        <vType vClass="passenger" id="tc0"  color=".8,.2,.2" accel="2.6" decel="4.5" sigma="0.5" length="5" minGap="1.5" maxSpeed="70" probability=".4" guiShape="passenger/sedan"/>
+        <vType vClass="passenger" id="tc1" color=".8,.8,.8" accel="3.0" decel="4.5" sigma="0.5" length="4.5" minGap="1.5" maxSpeed="70" probability=".2" guiShape="passenger/hatchback"/>
+        <vType vClass="passenger" id="tc2" color=".2,.2,.8" accel="2.8" decel="4.5" sigma="0.5" length="4.5" minGap="1" maxSpeed="70" probability=".2" guiShape="passenger/hatchback"/>
+        <vType vClass="passenger" id="tc3"  color=".3,.3,.3" accel="2.7" decel="4.5" sigma="0.5" length="5" minGap="1.5" maxSpeed="70" probability=".2" guiShape="passenger/wagon"/>
+        <vType vClass="passenger" id="tc4"  color=".9,.9,.9" accel="2.4" decel="4.5" sigma="0.5" length="5" minGap="1.5" maxSpeed="30" probability=".1" guiShape="passenger/van"/>
+        <vType vClass="passenger" id="tc5"  color=".8,.8,.0" accel="2.3" decel="4.5" sigma="0.5" length="5" minGap="1.5" maxSpeed="30" probability=".05" guiShape="delivery"/>
+    </vTypeDistribution>
+    <vTypeDistribution id="ped">
+        <vType vClass="pedestrian" id="tp0"  color="red"/>
+    </vTypeDistribution>
+    <vTypeDistribution id="bik">
+        <vType vClass="bicycle" id="tb0"  color="yellow"/>
+    </vTypeDistribution>
+</routes>

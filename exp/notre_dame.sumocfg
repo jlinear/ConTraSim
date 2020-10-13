@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+    <input>
+        <net-file value="..//data/map/notre_dame.net.xml"/>
+        <!-- <route-files value="..//debug/sample.rou.xml"/> -->
+        <route-files value="..//data/trips/notre_dame_persons.trips.xml, ..//data/trips/notre_dame_cars.trips.xml, ..//data/trips/notre_dame_bikes.trips.xml"/>
+        <additional-files value= "..//data/map/notre_dame.poly.xml, ..//data/trips/vtypes.add.xml"/>
+    </input>
+    
+    <time>
+    <!-- activities of one week, exluding Satuarday and Sunday -->
+    <!-- starts at 12:00am Monday and ends at 11:59pm Friday -->
+        <begin value="15000"/>
+        <!-- <end value="432000"/> -->
+        <end value="230400"/>
+    </time>
+
+    <processing>
+        <!-- <ignore-route-errors value="true"/> -->
+    </processing>
+
+    <routing>
+        <device.rerouting.adaptation-steps value="30"/>
+        <!-- <device.rerouting.with-taz value="true"/> -->
+    </routing>
+
+    <gui_only>
+        <gui-settings-file value="notre_dame.view.xml"/>
+    </gui_only>
+
+    <output>
+        <fcd-output value="..//output/notre_dame.fcd.xml"/>
+        <fcd-output.geo value="true"/>
+    </output>
+</configuration>
