@@ -25,10 +25,10 @@ For sample-based profile modeling, the GeoLife dataset is used and can be downlo
 If you find the code useful, please cite our paper：
 ```
 @inproceedings{yang2020generating,
-  title={Generating Contextual Trajectories from User Profiles,
-  author={Yang, Jian and Poellabauer, Christian and Mitra, Pramita and Sharma, Abhishek and Neubecker, Cynthia and Chand, Arpita,
-  booktitle={3rd ACM SIGSPATIAL International Workshop onGeoSpatial Simulation (GeoSim’20),
-  year={2020,
-  organization={ACM
+  title={Generating Contextual Trajectories from User Profiles},
+  author={Yang, Jian and Poellabauer, Christian and Mitra, Pramita and Sharma, Abhishek and Neubecker, Cynthia and Chand, Arpita},
+  booktitle={3rd ACM SIGSPATIAL International Workshop on GeoSpatial Simulation (GeoSim’20)},
+  year={2020},
+  organization={ACM}
 }
 ```
